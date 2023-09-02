@@ -2,7 +2,7 @@ import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import React from 'react';
 import { GalleryStyled } from './ImageGallery.styled';
 
-export const ImageGallery = ({ gallery }) => {
+export const ImageGallery = ({ gallery, onClickItem }) => {
   return (
     <GalleryStyled>
       {gallery.map(({ id, webformatURL, largeImageURL }) => {
@@ -11,6 +11,7 @@ export const ImageGallery = ({ gallery }) => {
             key={id}
             imageURL={webformatURL}
             bigImageURL={largeImageURL}
+            onClickItem={onClickItem}
           />
         );
       })}
