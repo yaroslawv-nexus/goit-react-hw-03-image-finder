@@ -1,7 +1,7 @@
 import React from 'react';
 import { Overlay, ModalStyle } from './Modal.styled';
 
-export const Modal = ({ largeImageURL, onCloseModal }) => {
+export const Modal = ({ largeImageURL, onCloseModal, description }) => {
   return (
     <Overlay
       onClick={e => {
@@ -11,7 +11,7 @@ export const Modal = ({ largeImageURL, onCloseModal }) => {
       }}
     >
       <ModalStyle>
-        <img src={largeImageURL} alt="photo" />
+        <img src={largeImageURL} alt={description} />
       </ModalStyle>
     </Overlay>
   );

@@ -84,17 +84,25 @@ export class App extends Component {
   };
 
   render() {
-    const { gallery, loader, error, modalOpen, modalURL } = this.state;
+    const { gallery, loader, error, modalOpen, modalURL, value } = this.state;
     return (
       <Layout>
         <Searchbar submitSearch={this.getSearchWord} />
         {gallery.length > 0 && (
-          <ImageGallery gallery={gallery} onClickItem={this.onClickItem} />
+          <ImageGallery
+            gallery={gallery}
+            onClickItem={this.onClickItem}
+            description={value}
+          />
         )}
         {gallery.length > 0 && !loader && <Button onClick={this.onNextPage} />}
         {loader && !error && <PuffLoader />}
         {modalOpen && (
-          <Modal largeImageURL={modalURL} onCloseModal={this.closeModal} />
+          <Modal
+            largeImageURL={modalURL}
+            onCloseModal={this.closeModal}
+            description={value}
+          />
         )}
         <Toaster position="top-right" />
       </Layout>
