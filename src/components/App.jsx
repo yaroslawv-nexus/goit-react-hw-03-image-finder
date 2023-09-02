@@ -24,7 +24,7 @@ export class App extends Component {
     if (value !== prevState.value) {
       this.setState({ loader: true, page: 1, error: false });
       try {
-        const images = await getImages(value);
+        const images = await getImages(value.split('/')[0]);
         if (images.data.hits.length === 0) {
           throw new Error();
         }
@@ -38,7 +38,7 @@ export class App extends Component {
     } else if (page !== prevState.page && page !== 1) {
       this.setState({ loader: true, error: false });
       try {
-        const images = await getImages(value, page);
+        const images = await getImages(value.split('/')[0], page);
         if (images.data.hits.length === 0) {
           throw new Error();
         }
@@ -52,8 +52,11 @@ export class App extends Component {
     }
   }
 
-  getSearchWord = value => {
-    this.setState({ value: value });
+  goSearch = value => {
+    if (value === '') {
+      return;
+    }
+    this.setState({ value: `${value}/${Date.now()}` });
   };
 
   onNextPage = () => {
@@ -87,7 +90,7 @@ export class App extends Component {
     const { gallery, loader, error, modalOpen, modalURL, value } = this.state;
     return (
       <Layout>
-        <Searchbar submitSearch={this.getSearchWord} />
+        <Searchbar submitSearch={this.goSearch} />
         {gallery.length > 0 && (
           <ImageGallery
             gallery={gallery}
