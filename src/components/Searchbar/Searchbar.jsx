@@ -12,24 +12,25 @@ export class Searchbar extends Component {
     value: '',
   };
 
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.submitSearch(this.state.value);
+  };
+
+  onChange = e => {
+    this.setState({ value: e.target.value });
+  };
+
   render() {
-    const { submitSearch } = this.props;
     return (
       <SearchbarStyled>
-        <SearchForm
-          onSubmit={e => {
-            e.preventDefault();
-            submitSearch(this.state.value);
-          }}
-        >
+        <SearchForm onSubmit={this.onSubmit}>
           <SearchButton type="submit">
             <SearchSVG />
           </SearchButton>
 
           <SearchInput
-            onChange={({ target }) => {
-              this.setState({ value: target.value });
-            }}
+            onChange={this.onChange}
             type="text"
             autoComplete="off"
             autoFocus

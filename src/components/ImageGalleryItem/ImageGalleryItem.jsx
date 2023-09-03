@@ -9,7 +9,7 @@ export const ImageGalleryItem = ({
 }) => {
   return (
     <GalleryItemStyled
-      onClick={e => {
+      onClick={() => {
         onClickItem(bigImageURL);
       }}
     >

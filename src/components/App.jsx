@@ -20,29 +20,15 @@ export class App extends Component {
   };
 
   async componentDidUpdate(_, prevState) {
-    const { value, page } = this.state;
-    if (value !== prevState.value) {
-      this.setState({ loader: true, page: 1, error: false });
-      try {
-        const images = await getImages(value.split('/')[0]);
-        if (images.data.hits.length === 0) {
-          throw new Error();
-        }
-        this.setState({ gallery: images.data.hits });
-      } catch (error) {
-        this.setState({ error: true });
-        toast.error('Oops. Error');
-      } finally {
-        this.setState({ loader: false });
-      }
-    } else if (page !== prevState.page && page !== 1) {
+    const { value, page, gallery } = this.state;
+    if (value !== prevState.value || page !== prevState.page) {
       this.setState({ loader: true, error: false });
       try {
-        const images = await getImages(value.split('/')[0], page);
+        const images = await getImages(value, page);
         if (images.data.hits.length === 0) {
           throw new Error();
         }
-        this.setState({ gallery: [...prevState.gallery, ...images.data.hits] });
+        this.setState({ gallery: [...gallery, ...images.data.hits] });
       } catch (error) {
         this.setState({ error: true });
         toast.error('Oops. Error');
@@ -56,7 +42,7 @@ export class App extends Component {
     if (value === '') {
       return;
     }
-    this.setState({ value: `${value}/${Date.now()}` });
+    this.setState({ value: value, page: 1, gallery: [] });
   };
 
   onNextPage = () => {
@@ -67,18 +53,10 @@ export class App extends Component {
 
   openModal = () => {
     this.setState({ modalOpen: true });
-    window.addEventListener('keydown', this.closeModalEsc);
   };
 
   closeModal = () => {
     this.setState({ modalOpen: false });
-    window.removeEventListener('keydown', this.closeModalEsc);
-  };
-
-  closeModalEsc = e => {
-    if (e.key === 'Escape') {
-      this.closeModal();
-    }
   };
 
   onClickItem = url => {
